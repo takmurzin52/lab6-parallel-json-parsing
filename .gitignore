@@ -1,0 +1,19 @@
+# Compiled Java
+target/
+*.class
+
+# IDE
+.idea/
+*.iml
+.vscode/
+
+# Logs
+*.log
+
+# Data files (do NOT commit large JSON/XML!)
+data/
+!data/README.md   # но можно оставить инструкцию
+
+# OS
+.DS_Store
+Thumbs.db
