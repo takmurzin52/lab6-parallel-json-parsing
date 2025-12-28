@@ -9,7 +9,7 @@ import java.io.IOException;
 
 public class Main {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws Exception {
         if (args.length < 2 || !args[0].equals("--mode")) {
             System.err.println("Usage: Main --mode <sequential|generate> [args...]");
             return;
@@ -70,6 +70,12 @@ public class Main {
             System.out.println("Города: " + result.cityDistribution);
             System.out.printf("Среднее лайков: %.2f%n", result.avgLikesPerUser);
             System.out.println("Топ тегов: " + result.top10Tags.size());
+        }else if ("benchmark".equals(mode)) {
+            if (args.length < 3) {
+                System.err.println("Usage: --mode benchmark <input.json>");
+                return;
+            }
+            BenchmarkRunner.runTests(args[2]);
         }else {
             System.err.println("Unknown mode: " + mode);
         }
