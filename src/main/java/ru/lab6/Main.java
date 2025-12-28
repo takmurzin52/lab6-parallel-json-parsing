@@ -44,7 +44,33 @@ public class Main {
                 System.out.printf("  %2d. %s → %d%n", i + 1, tc.tag, tc.count);
             }
 
-        } else {
+        } else if ("forkjoin".equals(mode)) {
+            if (args.length < 3) {
+                System.err.println("Usage: --mode forkjoin <input.json>");
+                return;
+            }
+            File file = new File(args[2]);
+
+            System.out.println("Запуск ForkJoinPool парсера...");
+            long start = System.currentTimeMillis();
+
+            java.util.concurrent.ForkJoinPool pool = new java.util.concurrent.ForkJoinPool();
+            ru.lab6.parser.parallel.JsonChunkParserTask task =
+                    new ru.lab6.parser.parallel.JsonChunkParserTask(file, 0, file.length());
+
+            AnalysisResult result = pool.invoke(task);
+
+            result.finalizeStats();
+
+            long duration = System.currentTimeMillis() - start;
+            System.out.println("Время выполнения: " + duration + " мс");
+
+            // Вывод результатов
+            System.out.println("Пользователей: " + result.userCount);
+            System.out.println("Города: " + result.cityDistribution);
+            System.out.printf("Среднее лайков: %.2f%n", result.avgLikesPerUser);
+            System.out.println("Топ тегов: " + result.top10Tags.size());
+        }else {
             System.err.println("Unknown mode: " + mode);
         }
     }
